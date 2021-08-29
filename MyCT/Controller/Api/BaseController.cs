@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MyCT.Interface.ServiceLocator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
+
 
 namespace MyCT.Controller.Api
 {
@@ -12,10 +13,10 @@ namespace MyCT.Controller.Api
     [ApiController]
     public class BaseController : ControllerBase
     {
-        protected IServiceProvider _serviceProvider;
-        public BaseController(IServiceProvider serviceProvider)
+        protected IServiceLocator _serviceLocator;
+        public BaseController(IServiceLocator serviceLocator)
         {
-            this._serviceProvider = serviceProvider;
+            this._serviceLocator = serviceLocator;
         }
     }
 }

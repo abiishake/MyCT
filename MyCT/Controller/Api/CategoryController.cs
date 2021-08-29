@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using MyCT.Core.Model.DTO;
 using MyCT.Interface.BOObjects;
+using MyCT.Interface.ServiceLocator;
 
 namespace MyCT.Controller.Api
 {
@@ -14,7 +15,7 @@ namespace MyCT.Controller.Api
     [ApiController]
     public class CategoryController : BaseController
     {
-        public CategoryController(IServiceProvider serviceProvider) : base(serviceProvider)
+        public CategoryController(IServiceLocator serviceLocator) : base(serviceLocator)
         {
         }
 
@@ -29,7 +30,7 @@ namespace MyCT.Controller.Api
                     return BadRequest("Mandatory Fields not filled.");
                 }
 
-                var CategoryBO = _serviceProvider.GetService<ICategoryBO>();
+                var CategoryBO = _serviceLocator.Resolve<ICategoryBO>();
                 if (CategoryBO.Add(CategoryDTO) > 0)
                 {
                     return Ok("Category Added Successfully");

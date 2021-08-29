@@ -14,10 +14,13 @@ using Microsoft.IdentityModel.Tokens;
 using MyCT.Core.Model.Entities;
 using MyCT.Interface.BOObjects;
 using MyCT.Interface.Repositories;
+using MyCT.Interface.ServiceLocator;
 using MyCT.Interface.UnitOfWork;
+using MyCT.IoC;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -39,20 +42,24 @@ namespace MyCT
                 option.UseMySQL(Configuration["ConnectionStrings:MyCTDbConnection"]);
             });
 
+            BusinessLogicLayer.BOObjects.ShopBO bO = null; // #NeedToFix for adding a reference to assembly 
+
+            services.AddScoped<IServiceLocator, ServiceLocator>();
+
             AddDependencies(services);
 
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
-            services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
-            services.AddTransient(typeof(IRepositoryWithId<>), typeof(RepositoryWithId<>));
-            services.AddTransient<IShopBO, ShopBO>();
-            services.AddTransient<IShopRepository, ShopRepository>();
-            services.AddTransient<ICategoryRepository, CategoryRepository>();
-            services.AddTransient<ICategoryBO, CategoryBO>();
-            services.AddTransient<ISubCategoryRepository, SubCategoryRepository>();
-            services.AddTransient<IStatusRepository, StatusRepository>();
-            services.AddTransient<IStateRepository, StateRepository>();
-            services.AddTransient<ICityRepository, CityRepository>();
-            services.AddTransient<ILatLongRepository, LatLongRepository>();
+            //services.AddTransient<IUnitOfWork, UnitOfWork>();
+            //services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
+            //services.AddTransient(typeof(IRepositoryWithId<>), typeof(RepositoryWithId<>));
+
+            //services.AddTransient<IShopRepository, ShopRepository>();
+            //services.AddTransient<ICategoryRepository, CategoryRepository>();
+            //services.AddTransient<ICategoryBO, CategoryBO>();
+            //services.AddTransient<ISubCategoryRepository, SubCategoryRepository>();
+            //services.AddTransient<IStatusRepository, StatusRepository>();
+            //services.AddTransient<IStateRepository, StateRepository>();
+            //services.AddTransient<ICityRepository, CityRepository>();
+            //services.AddTransient<ILatLongRepository, LatLongRepository>();
 
             services.AddIdentity<CTUser, CTRole>(options =>
             {
@@ -79,10 +86,58 @@ namespace MyCT
 
         private void AddDependencies(IServiceCollection services)
         {
-            List<string> nameSpaces = new List<string>();
+            Type iDisposable = typeof(IDisposable);
+
+            HashSet<string> nameSpaces = new HashSet<string>();
             nameSpaces.Add("DataAccessLayer.UnitOfWork");
             nameSpaces.Add("DataAccessLayer.Repositories");
-            nameSpaces.Add("BusinessLogicLayer.Objects");
+            nameSpaces.Add("BusinessLogicLayer.BOObjects");
+
+            HashSet<string> assemblieNames = new HashSet<string>();
+
+            foreach (string ns in nameSpaces)
+            {
+                string assembly = ns.Split('.')[0];
+                if (!assemblieNames.Contains(assembly))
+                {
+                    assemblieNames.Add(assembly);
+                }
+            }
+           
+            IEnumerable<Assembly> assemblies = AppDomain.CurrentDomain.GetAssemblies().Where(x => assemblieNames.Contains(x.GetName().Name));
+
+            foreach (Assembly assembly in assemblies)
+            {
+                Type[] types = assembly.GetExportedTypes().Where(x => nameSpaces.Contains(x.Namespace) && !x.IsInterface && !x.IsAbstract).ToArray();
+
+                foreach (Type type in types)
+                {
+                    Type _interface = type.GetInterface("I" + type.Name);
+                    ConstructorInfo[] constructors = type.GetConstructors();
+                    if (_interface != null && constructors.Length > 0 && constructors.All(x => x.IsPublic))
+                    {
+                        if (iDisposable.IsAssignableFrom(type))
+                        {
+                            if (_interface.IsGenericType && !_interface.IsGenericTypeDefinition)
+                            {
+                                _interface = _interface.GetGenericTypeDefinition();
+                            }
+
+                            services.AddScoped(_interface, type);
+                        }
+                        else
+                        {
+                            if (_interface.IsGenericType && !_interface.IsGenericTypeDefinition)
+                            {
+                                _interface = _interface.GetGenericTypeDefinition();
+                            }
+                            services.AddTransient(_interface, type);
+                        }
+                    }
+                }
+            }
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

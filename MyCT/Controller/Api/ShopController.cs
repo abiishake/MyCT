@@ -5,8 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
 using MyCT.Interface.BOObjects;
+using MyCT.Interface.ServiceLocator;
 
 namespace MyCT.Controller.Api
 {
@@ -14,7 +14,7 @@ namespace MyCT.Controller.Api
     [ApiController]
     public class ShopController : BaseController
     {
-        public ShopController(IServiceProvider serviceProvider) : base(serviceProvider)
+        public ShopController(IServiceLocator serviceLocator) : base(serviceLocator)
         {
 
         }
@@ -30,7 +30,7 @@ namespace MyCT.Controller.Api
                     return BadRequest("Mandatory Fields not filled.");
                 }
 
-                var shopBO = _serviceProvider.GetService<IShopBO>();
+                var shopBO = _serviceLocator.Resolve<IShopBO>();
                 if (shopBO.Add(shopDTO) > 0)
                 {
                     return Ok("Shop Added Successfully");
