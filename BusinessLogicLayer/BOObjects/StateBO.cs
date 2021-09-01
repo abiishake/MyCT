@@ -1,35 +1,36 @@
 ﻿using MyCT.Core.Model.DTO;
+using MyCT.Core.Model.Entities;
 using MyCT.Interface.BOObjects;
+using MyCT.Interface.ServiceLocator;
+using MyCT.Interface.UnitOfWork;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MyCT.Core.Model.Entities;
-using MyCT.Interface.UnitOfWork;
-using MyCT.Interface.ServiceLocator;
 
 namespace BusinessLogicLayer.BOObjects
 {
-    public class CategoryBO : BaseBO, ICategoryBO
+    public class StateBO : BaseBO, IStateBO
     {
-        public CategoryBO(IServiceLocator serviceLocator) : base(serviceLocator)
+        public StateBO(IServiceLocator serviceLocator) : base(serviceLocator)
         {
+
         }
 
-        public int Add(CategoryDTO CategoryDTO, out Object _object)
+        public int Add(StateDTO StateDTO, out Object _object)
         {
             try
             {
                 using (var unitOfWork = _serviceLocator.Resolve<IUnitOfWork>())
                 {
-                    Category category = new Category()
+                    State state = new State()
                     {
-                        Name = CategoryDTO.Name,
-                        CreatedOn = CategoryDTO.CreatedOn
+                        Name = StateDTO.Name,
+                        CreatedOn = StateDTO.CreatedOn
                     };
-                    unitOfWork.Categories.Add(category);
-                    _object = category;
+                    unitOfWork.States.Add(state);
+                    _object = state;
                     return unitOfWork.Save();
 
                 }
@@ -43,16 +44,16 @@ namespace BusinessLogicLayer.BOObjects
 
 
 
-        public int Edit(CategoryDTO CategoryDTO, out object _object)
+        public int Edit(StateDTO StateDTO, out object _object)
         {
             try
             {
                 using (var unitOfWork = _serviceLocator.Resolve<IUnitOfWork>())
                 {
-                    Category category = unitOfWork.Categories.GetById(CategoryDTO.Id);
-                    category.Name = CategoryDTO.Name;
-                    category.ModifiedOn = CategoryDTO.ModifiedOn;
-                    _object = category;
+                    State state = unitOfWork.States.GetById(StateDTO.Id);
+                    state.Name = StateDTO.Name;
+                    state.ModifiedOn = StateDTO.ModifiedOn;
+                    _object = state;
                     return unitOfWork.Save();
                 }
             }
@@ -63,17 +64,17 @@ namespace BusinessLogicLayer.BOObjects
             }
         }
 
-        public CategoryDTO GetById(int id)
+        public StateDTO GetById(int id)
         {
             try
             {
                 using (var unitOfWork = _serviceLocator.Resolve<IUnitOfWork>())
                 {
-                    Category category = unitOfWork.Categories.GetById(id);
-                    return new CategoryDTO()
+                    State state = unitOfWork.States.GetById(id);
+                    return new StateDTO()
                     {
-                        Id = category.Id,
-                        Name = category.Name
+                        Id = state.Id,
+                        Name = state.Name
                     };
                 }
             }
@@ -84,19 +85,19 @@ namespace BusinessLogicLayer.BOObjects
             }
         }
 
-        public List<CategoryDTO> List()
+        public List<StateDTO> List()
         {
             try
             {
                 using (var unitOfWork = _serviceLocator.Resolve<IUnitOfWork>())
                 {
-                    List<CategoryDTO> categories = unitOfWork.Categories.GetAll().Select(x => new CategoryDTO()
+                    List<StateDTO> States = unitOfWork.States.GetAll().Select(x => new StateDTO()
                     {
                         Id = x.Id,
                         Name = x.Name
                     }).ToList();
 
-                    return categories;
+                    return States;
                 }
             }
             catch (Exception)
@@ -114,10 +115,10 @@ namespace BusinessLogicLayer.BOObjects
             {
                 using (var unitOfWork = _serviceLocator.Resolve<IUnitOfWork>())
                 {
-                    unitOfWork.Categories.RemoveById(id);
+                    unitOfWork.States.RemoveById(id);
                     return true;
                 }
-                
+
             }
             catch (Exception)
             {

@@ -15,9 +15,9 @@ namespace DataAccessLayer.UnitOfWork
     public class UnitOfWork : IUnitOfWork
     {
         private MyCTDbContext _myCTDbContext;
-        private readonly Dictionary<string, object> _cache = new Dictionary<string, object>();
-        private IConfiguration Configuration;
-        private IServiceProvider _serviceProvider;
+        private readonly Dictionary<string, object> _cache = new();
+        private readonly IConfiguration Configuration;
+        private readonly IServiceProvider _serviceProvider;
 
         public UnitOfWork(IConfiguration configuration, IServiceProvider serviceProvider)
         {
@@ -40,15 +40,12 @@ namespace DataAccessLayer.UnitOfWork
 
         public IStatusRepository Status => GetRepository<IStatusRepository>();
 
-        public ILatLongRepository LatLongs => GetRepository<ILatLongRepository>();
-
         private T GetRepository<T>() where T : class
         {
             Init();
             Type type = typeof(T);
             string name = type.IsGenericType ? type.GetGenericArguments()[0].Name : type.Name;
-            object repositoryObject;
-            if (!_cache.TryGetValue(name, out repositoryObject))
+            if (!_cache.TryGetValue(name, out object repositoryObject))
             {
                 T repository = _serviceProvider.GetService<T>();
                 repository.GetType().GetMethod("Init").Invoke(repository, null);

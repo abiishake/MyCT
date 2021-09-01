@@ -42,24 +42,13 @@ namespace MyCT
                 option.UseMySQL(Configuration["ConnectionStrings:MyCTDbConnection"]);
             });
 
+
+
             BusinessLogicLayer.BOObjects.ShopBO bO = null; // #NeedToFix for adding a reference to assembly 
 
             services.AddScoped<IServiceLocator, ServiceLocator>();
 
             AddDependencies(services);
-
-            //services.AddTransient<IUnitOfWork, UnitOfWork>();
-            //services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
-            //services.AddTransient(typeof(IRepositoryWithId<>), typeof(RepositoryWithId<>));
-
-            //services.AddTransient<IShopRepository, ShopRepository>();
-            //services.AddTransient<ICategoryRepository, CategoryRepository>();
-            //services.AddTransient<ICategoryBO, CategoryBO>();
-            //services.AddTransient<ISubCategoryRepository, SubCategoryRepository>();
-            //services.AddTransient<IStatusRepository, StatusRepository>();
-            //services.AddTransient<IStateRepository, StateRepository>();
-            //services.AddTransient<ICityRepository, CityRepository>();
-            //services.AddTransient<ILatLongRepository, LatLongRepository>();
 
             services.AddIdentity<CTUser, CTRole>(options =>
             {
@@ -82,18 +71,22 @@ namespace MyCT
             services.AddAuthorization();
 
             services.AddControllers();
+
+            services.AddSwaggerGen();
         }
 
-        private void AddDependencies(IServiceCollection services)
+        private static void AddDependencies(IServiceCollection services)
         {
             Type iDisposable = typeof(IDisposable);
 
-            HashSet<string> nameSpaces = new HashSet<string>();
-            nameSpaces.Add("DataAccessLayer.UnitOfWork");
-            nameSpaces.Add("DataAccessLayer.Repositories");
-            nameSpaces.Add("BusinessLogicLayer.BOObjects");
+            HashSet<string> nameSpaces = new()
+            {
+                "DataAccessLayer.UnitOfWork",
+                "DataAccessLayer.Repositories",
+                "BusinessLogicLayer.BOObjects"
+            };
 
-            HashSet<string> assemblieNames = new HashSet<string>();
+            HashSet<string> assemblieNames = new();
 
             foreach (string ns in nameSpaces)
             {
@@ -141,12 +134,20 @@ namespace MyCT
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(x =>
+            {
+                x.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
+                x.RoutePrefix = string.Empty;
+            });
 
             app.UseRouting();
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MyCT.Core.Model.DTO
 {
-    public class CategoryDTO
+    public class CategoryDTO : BaseDTO
     {
         public int Id { get; set; }
         [Required]

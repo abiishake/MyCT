@@ -21,27 +21,126 @@ namespace MyCT.Controller.Api
 
         [Route("add")]
         [HttpPost]
-        public IActionResult PostAddShop([FromBody] ShopDTO shopDTO)
+        public IActionResult AddShop([FromBody] ShopDTO ShopDTO)
         {
             try
             {
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest("Mandatory Fields not filled.");
+                    return BadRequestMessage();
                 }
 
-                var shopBO = _serviceLocator.Resolve<IShopBO>();
-                if (shopBO.Add(shopDTO) > 0)
+                AddCreatedBy<ShopDTO>(ShopDTO);
+                var ShopBO = _serviceLocator.Resolve<IShopBO>();
+                if (ShopBO.Add(ShopDTO, out _object) > 0)
                 {
-                    return Ok("Shop Added Successfully");
+                    return Created(new Uri("", UriKind.Relative), _object);
                 }
                 else
                 {
-                    return BadRequest("Error Occured");
+                    return BadRequestMessage("Error Occured");
                 }
             }
             catch (Exception ex)
             {
+                throw;
+            }
+        }
+
+        [Route("edit")]
+        [HttpPut]
+        public IActionResult EditShop([FromBody] ShopDTO ShopDTO)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequestMessage();
+                }
+
+                AddCreatedBy<ShopDTO>(ShopDTO);
+                var ShopBO = _serviceLocator.Resolve<IShopBO>();
+                if (ShopBO.Add(ShopDTO, out _object) > 0)
+                {
+                    return Ok(_object);
+                }
+                else
+                {
+                    return BadRequestMessage("Error Occured");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+
+        [HttpGet()]
+        public IActionResult GetAll()
+        {
+            try
+            {
+
+
+                var ShopBO = _serviceLocator.Resolve<IShopBO>();
+                var list = ShopBO.List();
+                if (list != null)
+                {
+                    return Ok(list);
+                }
+                else
+                {
+                    return BadRequestMessage("Error Occured");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        [HttpGet("{shopid}")]
+        public IActionResult GetById(int shopid)
+        {
+            try
+            {
+                var ShopBO = _serviceLocator.Resolve<IShopBO>();
+                var shop = ShopBO.GetById(shopid);
+                if (shop != null)
+                {
+                    return Ok(shop);
+                }
+                else
+                {
+                    return BadRequestMessage("Error Occured");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        [HttpDelete("{shopid}")]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                var ShopBO = _serviceLocator.Resolve<IShopBO>();
+                if (ShopBO.Remove(id))
+                {
+                    return NoContent();
+                }
+                else
+                {
+                    return BadRequestMessage("Error Occured");
+                }
+
+            }
+            catch (Exception)
+            {
+
                 throw;
             }
         }

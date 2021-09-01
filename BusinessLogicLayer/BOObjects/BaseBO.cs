@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MyCT.Core.Model.Entities;
+using MyCT.Interface.ServiceLocator;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,10 +10,12 @@ namespace BusinessLogicLayer.BOObjects
 {
     public class BaseBO
     {
-        protected IServiceProvider _serviceProvider;
-        public BaseBO(IServiceProvider serviceProvider)
+        protected IServiceLocator _serviceLocator;
+        public BaseBO(IServiceLocator serviceLocator)
         {
-            this._serviceProvider = serviceProvider;
+            this._serviceLocator = serviceLocator;
         }
+
+      
     }
 }

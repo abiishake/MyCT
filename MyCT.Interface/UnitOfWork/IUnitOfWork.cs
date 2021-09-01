@@ -20,6 +20,5 @@ namespace MyCT.Interface.UnitOfWork
         IStateRepository States { get; }
         ICityRepository Cities { get; }
         IStatusRepository Status { get; }
-        ILatLongRepository LatLongs { get; }
     }
 }

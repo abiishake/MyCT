@@ -22,7 +22,6 @@ namespace MyCT.Core.Model.Entities
         public virtual State State { get; set; }
         public int StateId { get; set; }
         public string WebSite { get; set; }
-        public LatLong LatLong { get; set; }
         public int LatLongId { get; set; }
         public DateTime OpenTime { get; set; }
         public DateTime CloseTime { get; set; }
@@ -31,6 +30,8 @@ namespace MyCT.Core.Model.Entities
         public int OwnerId { get; set; }
         public Status Status { get; set; }
         public int StatusId { get; set; }
+        public decimal Latitude { get; set; }
+        public decimal Longitude { get; set; }
 
     }
 }

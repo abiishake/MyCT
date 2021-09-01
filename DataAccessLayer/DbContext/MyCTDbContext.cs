@@ -26,15 +26,17 @@ namespace DataAccessLayer.DbContext
             builder.Entity<CTUserClaim>().ToTable("user_claims");
             builder.Entity<CTUserToken>().ToTable("user_tokens").HasKey(x => x.Id);
             builder.Entity<CTRoleClaim>().ToTable("role_claims");
+
+            builder.Entity<Shop>().Property(x => x.Latitude).HasPrecision(12, 10);
+            builder.Entity<Shop>().Property(x => x.Longitude).HasPrecision(12, 10);
             builder.Entity<Shop>().ToTable("shops");
+
             builder.Entity<Category>().ToTable("categories");
             builder.Entity<SubCategory>().ToTable("subcategories");
             builder.Entity<State>().ToTable("states");
             builder.Entity<City>().ToTable("cities");
             builder.Entity<Status>().ToTable("status");
-            builder.Entity<LatLong>().Property(x => x.Latitude).HasPrecision(12, 10);
-            builder.Entity<LatLong>().Property(x => x.Longitude).HasPrecision(12, 10);
-            builder.Entity<LatLong>().ToTable("latlongs");
+            
 
            
         }

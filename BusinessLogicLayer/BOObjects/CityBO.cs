@@ -1,35 +1,36 @@
 ﻿using MyCT.Core.Model.DTO;
+using MyCT.Core.Model.Entities;
 using MyCT.Interface.BOObjects;
+using MyCT.Interface.ServiceLocator;
+using MyCT.Interface.UnitOfWork;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MyCT.Core.Model.Entities;
-using MyCT.Interface.UnitOfWork;
-using MyCT.Interface.ServiceLocator;
 
 namespace BusinessLogicLayer.BOObjects
 {
-    public class CategoryBO : BaseBO, ICategoryBO
+    public class CityBO : BaseBO, ICityBO
     {
-        public CategoryBO(IServiceLocator serviceLocator) : base(serviceLocator)
+        public CityBO(IServiceLocator serviceLocator) : base(serviceLocator)
         {
         }
 
-        public int Add(CategoryDTO CategoryDTO, out Object _object)
+        public int Add(CityDTO CityDTO, out Object _object)
         {
             try
             {
                 using (var unitOfWork = _serviceLocator.Resolve<IUnitOfWork>())
                 {
-                    Category category = new Category()
+                    City city = new City()
                     {
-                        Name = CategoryDTO.Name,
-                        CreatedOn = CategoryDTO.CreatedOn
+                        Name = CityDTO.Name,
+                        StateId = CityDTO.StateId,
+                        CreatedOn = CityDTO.CreatedOn
                     };
-                    unitOfWork.Categories.Add(category);
-                    _object = category;
+                    unitOfWork.Cities.Add(city);
+                    _object = city;
                     return unitOfWork.Save();
 
                 }
@@ -43,16 +44,17 @@ namespace BusinessLogicLayer.BOObjects
 
 
 
-        public int Edit(CategoryDTO CategoryDTO, out object _object)
+        public int Edit(CityDTO CityDTO, out object _object)
         {
             try
             {
                 using (var unitOfWork = _serviceLocator.Resolve<IUnitOfWork>())
                 {
-                    Category category = unitOfWork.Categories.GetById(CategoryDTO.Id);
-                    category.Name = CategoryDTO.Name;
-                    category.ModifiedOn = CategoryDTO.ModifiedOn;
-                    _object = category;
+                    City city = unitOfWork.Cities.GetById(CityDTO.Id);
+                    city.Name = CityDTO.Name;
+                    city.StateId = CityDTO.StateId;
+                    city.ModifiedOn = CityDTO.ModifiedOn;
+                    _object = city;
                     return unitOfWork.Save();
                 }
             }
@@ -63,17 +65,17 @@ namespace BusinessLogicLayer.BOObjects
             }
         }
 
-        public CategoryDTO GetById(int id)
+        public CityDTO GetById(int id)
         {
             try
             {
                 using (var unitOfWork = _serviceLocator.Resolve<IUnitOfWork>())
                 {
-                    Category category = unitOfWork.Categories.GetById(id);
-                    return new CategoryDTO()
+                    City city = unitOfWork.Cities.GetById(id);
+                    return new CityDTO()
                     {
-                        Id = category.Id,
-                        Name = category.Name
+                        Id = city.Id,
+                        Name = city.Name
                     };
                 }
             }
@@ -84,19 +86,19 @@ namespace BusinessLogicLayer.BOObjects
             }
         }
 
-        public List<CategoryDTO> List()
+        public List<CityDTO> List()
         {
             try
             {
                 using (var unitOfWork = _serviceLocator.Resolve<IUnitOfWork>())
                 {
-                    List<CategoryDTO> categories = unitOfWork.Categories.GetAll().Select(x => new CategoryDTO()
+                    List<CityDTO> Cities = unitOfWork.Cities.GetAll().Select(x => new CityDTO()
                     {
                         Id = x.Id,
                         Name = x.Name
                     }).ToList();
 
-                    return categories;
+                    return Cities;
                 }
             }
             catch (Exception)
@@ -114,10 +116,10 @@ namespace BusinessLogicLayer.BOObjects
             {
                 using (var unitOfWork = _serviceLocator.Resolve<IUnitOfWork>())
                 {
-                    unitOfWork.Categories.RemoveById(id);
+                    unitOfWork.Cities.RemoveById(id);
                     return true;
                 }
-                
+
             }
             catch (Exception)
             {

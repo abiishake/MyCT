@@ -4,25 +4,10 @@ using MySql.EntityFrameworkCore.Metadata;
 
 namespace DataAccessLayer.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class Initial_Migration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "latlongs",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    Latitude = table.Column<decimal>(type: "decimal(12, 10)", precision: 12, scale: 10, nullable: false),
-                    Longitude = table.Column<decimal>(type: "decimal(12, 10)", precision: 12, scale: 10, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_latlongs", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "roles",
                 columns: table => new
@@ -36,19 +21,6 @@ namespace DataAccessLayer.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_roles", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "status",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_status", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -106,7 +78,9 @@ namespace DataAccessLayer.Migrations
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(type: "text", nullable: true),
                     CreatedById = table.Column<int>(type: "int", nullable: false),
-                    ModifiedById = table.Column<int>(type: "int", nullable: false)
+                    ModifiedById = table.Column<int>(type: "int", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -133,7 +107,9 @@ namespace DataAccessLayer.Migrations
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(type: "text", nullable: true),
                     CreatedById = table.Column<int>(type: "int", nullable: false),
-                    ModifiedById = table.Column<int>(type: "int", nullable: false)
+                    ModifiedById = table.Column<int>(type: "int", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -146,6 +122,35 @@ namespace DataAccessLayer.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_states_users_ModifiedById",
+                        column: x => x.ModifiedById,
+                        principalTable: "users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "status",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    CreatedById = table.Column<int>(type: "int", nullable: false),
+                    ModifiedById = table.Column<int>(type: "int", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_status", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_status_users_CreatedById",
+                        column: x => x.CreatedById,
+                        principalTable: "users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_status_users_ModifiedById",
                         column: x => x.ModifiedById,
                         principalTable: "users",
                         principalColumn: "Id",
@@ -266,7 +271,9 @@ namespace DataAccessLayer.Migrations
                     Name = table.Column<string>(type: "text", nullable: true),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     CreatedById = table.Column<int>(type: "int", nullable: false),
-                    ModifiedById = table.Column<int>(type: "int", nullable: false)
+                    ModifiedById = table.Column<int>(type: "int", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -298,7 +305,11 @@ namespace DataAccessLayer.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(type: "text", nullable: true),
-                    StateId = table.Column<int>(type: "int", nullable: false)
+                    StateId = table.Column<int>(type: "int", nullable: false),
+                    CreatedById = table.Column<int>(type: "int", nullable: false),
+                    ModifiedById = table.Column<int>(type: "int", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -307,6 +318,18 @@ namespace DataAccessLayer.Migrations
                         name: "FK_cities_states_StateId",
                         column: x => x.StateId,
                         principalTable: "states",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_cities_users_CreatedById",
+                        column: x => x.CreatedById,
+                        principalTable: "users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_cities_users_ModifiedById",
+                        column: x => x.ModifiedById,
+                        principalTable: "users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -331,8 +354,12 @@ namespace DataAccessLayer.Migrations
                     Logo = table.Column<string>(type: "text", nullable: true),
                     OwnerId = table.Column<int>(type: "int", nullable: false),
                     StatusId = table.Column<int>(type: "int", nullable: false),
+                    Latitude = table.Column<decimal>(type: "decimal(18, 2)", precision: 12, scale: 10, nullable: false),
+                    Longitude = table.Column<decimal>(type: "decimal(18, 2)", precision: 12, scale: 10, nullable: false),
                     CreatedById = table.Column<int>(type: "int", nullable: false),
-                    ModifiedById = table.Column<int>(type: "int", nullable: false)
+                    ModifiedById = table.Column<int>(type: "int", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -347,12 +374,6 @@ namespace DataAccessLayer.Migrations
                         name: "FK_shops_cities_CityId",
                         column: x => x.CityId,
                         principalTable: "cities",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_shops_latlongs_LatLongId",
-                        column: x => x.LatLongId,
-                        principalTable: "latlongs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -404,6 +425,16 @@ namespace DataAccessLayer.Migrations
                 column: "ModifiedById");
 
             migrationBuilder.CreateIndex(
+                name: "IX_cities_CreatedById",
+                table: "cities",
+                column: "CreatedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_cities_ModifiedById",
+                table: "cities",
+                column: "ModifiedById");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_cities_StateId",
                 table: "cities",
                 column: "StateId");
@@ -433,11 +464,6 @@ namespace DataAccessLayer.Migrations
                 name: "IX_shops_CreatedById",
                 table: "shops",
                 column: "CreatedById");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_shops_LatLongId",
-                table: "shops",
-                column: "LatLongId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_shops_ModifiedById",
@@ -472,6 +498,16 @@ namespace DataAccessLayer.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_states_ModifiedById",
                 table: "states",
+                column: "ModifiedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_status_CreatedById",
+                table: "status",
+                column: "CreatedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_status_ModifiedById",
+                table: "status",
                 column: "ModifiedById");
 
             migrationBuilder.CreateIndex(
@@ -558,9 +594,6 @@ namespace DataAccessLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "cities");
-
-            migrationBuilder.DropTable(
-                name: "latlongs");
 
             migrationBuilder.DropTable(
                 name: "status");

@@ -9,9 +9,10 @@ namespace MyCT.Interface.BOObjects
 {
     public interface IStatusBO
     {
-        int Add(StatusDTO StatusDTO);
+        int Add(StatusDTO StatusDTO, out Object _object);
         bool Remove(int id);
-        int Edit(StatusDTO StatusDTO);
+        int Edit(StatusDTO StatusDTO, out Object _object);
+        StatusDTO GetById(int id);
         List<StatusDTO> List();
     }
 }

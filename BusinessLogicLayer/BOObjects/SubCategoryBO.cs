@@ -1,79 +1,79 @@
 ﻿using MyCT.Core.Model.DTO;
+using MyCT.Core.Model.Entities;
 using MyCT.Interface.BOObjects;
+using MyCT.Interface.ServiceLocator;
+using MyCT.Interface.UnitOfWork;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MyCT.Core.Model.Entities;
-using MyCT.Interface.UnitOfWork;
-using MyCT.Interface.ServiceLocator;
 
 namespace BusinessLogicLayer.BOObjects
 {
-    public class CategoryBO : BaseBO, ICategoryBO
+    public class SubSubCategoryBO : BaseBO, ISubCategoryBO
     {
-        public CategoryBO(IServiceLocator serviceLocator) : base(serviceLocator)
+        public SubSubCategoryBO(IServiceLocator serviceLocator) : base(serviceLocator)
         {
         }
 
-        public int Add(CategoryDTO CategoryDTO, out Object _object)
+        public int Add(SubCategoryDTO SubCategoryDTO, out Object _object)
         {
             try
             {
                 using (var unitOfWork = _serviceLocator.Resolve<IUnitOfWork>())
                 {
-                    Category category = new Category()
+                    SubCategory subCategory = new SubCategory()
                     {
-                        Name = CategoryDTO.Name,
-                        CreatedOn = CategoryDTO.CreatedOn
+                        Name = SubCategoryDTO.Name,
+                        CategoryId = SubCategoryDTO.CategoryId,
+                        CreatedOn = SubCategoryDTO.CreatedOn
                     };
-                    unitOfWork.Categories.Add(category);
-                    _object = category;
+                    unitOfWork.SubCategories.Add(subCategory);
+                    _object = subCategory;
                     return unitOfWork.Save();
 
                 }
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
 
 
 
-        public int Edit(CategoryDTO CategoryDTO, out object _object)
+        public int Edit(SubCategoryDTO SubCategoryDTO, out object _object)
         {
             try
             {
                 using (var unitOfWork = _serviceLocator.Resolve<IUnitOfWork>())
                 {
-                    Category category = unitOfWork.Categories.GetById(CategoryDTO.Id);
-                    category.Name = CategoryDTO.Name;
-                    category.ModifiedOn = CategoryDTO.ModifiedOn;
-                    _object = category;
+                    SubCategory subcategory = unitOfWork.SubCategories.GetById(SubCategoryDTO.Id);
+                    subcategory.Name = SubCategoryDTO.Name;
+                    subcategory.CategoryId = SubCategoryDTO.CategoryId;
+                    subcategory.ModifiedOn = SubCategoryDTO.ModifiedOn;
+                    _object = subcategory;
                     return unitOfWork.Save();
                 }
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
 
-        public CategoryDTO GetById(int id)
+        public SubCategoryDTO GetById(int id)
         {
             try
             {
                 using (var unitOfWork = _serviceLocator.Resolve<IUnitOfWork>())
                 {
-                    Category category = unitOfWork.Categories.GetById(id);
-                    return new CategoryDTO()
+                    SubCategory subcategory = unitOfWork.SubCategories.GetById(id);
+                    return new SubCategoryDTO()
                     {
-                        Id = category.Id,
-                        Name = category.Name
+                        Id = subcategory.Id,
+                        Name = subcategory.Name
                     };
                 }
             }
@@ -84,13 +84,13 @@ namespace BusinessLogicLayer.BOObjects
             }
         }
 
-        public List<CategoryDTO> List()
+        public List<SubCategoryDTO> List()
         {
             try
             {
                 using (var unitOfWork = _serviceLocator.Resolve<IUnitOfWork>())
                 {
-                    List<CategoryDTO> categories = unitOfWork.Categories.GetAll().Select(x => new CategoryDTO()
+                    List<SubCategoryDTO> categories = unitOfWork.SubCategories.GetAll().Select(x => new SubCategoryDTO()
                     {
                         Id = x.Id,
                         Name = x.Name
@@ -114,10 +114,10 @@ namespace BusinessLogicLayer.BOObjects
             {
                 using (var unitOfWork = _serviceLocator.Resolve<IUnitOfWork>())
                 {
-                    unitOfWork.Categories.RemoveById(id);
+                    unitOfWork.SubCategories.RemoveById(id);
                     return true;
                 }
-                
+
             }
             catch (Exception)
             {

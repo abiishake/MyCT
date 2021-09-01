@@ -9,9 +9,10 @@ namespace MyCT.Interface.BOObjects
 {
    public interface ICategoryBO
     {
-        int Add(CategoryDTO CategoryDTO);
+        int Add(CategoryDTO CategoryDTO, out Object _object);
         bool Remove(int id);
-        int Edit(CategoryDTO CategoryDTO);
+        int Edit(CategoryDTO CategoryDTO, out Object _object);
+        CategoryDTO GetById(int id);
         List<CategoryDTO> List();
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MyCT.Core.Model.DTO
 {
-    public class LatLongDTO
+    public class LatLongDTO : BaseDTO
     {
         public int Id { get; set; }
         public string Name { get; set; }

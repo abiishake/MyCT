@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 
 namespace MyCT.Interface.BOObjects
 {
-    public interface ISubSubCategoryDTO
+    public interface ISubCategoryBO
     {
-        int Add(SubCategoryDTO SubCategoryDTO);
+        int Add(SubCategoryDTO SubCategoryDTO, out Object _object);
         bool Remove(int id);
-        int Edit(SubCategoryDTO SubCategoryDTO);
+        int Edit(SubCategoryDTO SubCategoryDTO, out Object _object);
+        SubCategoryDTO GetById(int id);
         List<SubCategoryDTO> List();
     }
 }

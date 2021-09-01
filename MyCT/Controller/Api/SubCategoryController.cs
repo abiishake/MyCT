@@ -1,27 +1,26 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MyCT.Core.Model.DTO;
+using MyCT.Interface.BOObjects;
+using MyCT.Interface.ServiceLocator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
-using MyCT.Core.Model.DTO;
-using MyCT.Interface.BOObjects;
-using MyCT.Interface.ServiceLocator;
 
 namespace MyCT.Controller.Api
 {
-    [Route("api/category")]
+    [Route("api/subsubcategory")]
     [ApiController]
-    public class CategoryController : BaseController
+    public class SubSubCategoryController : BaseController
     {
-        public CategoryController(IServiceLocator serviceLocator) : base(serviceLocator)
+        public SubSubCategoryController(IServiceLocator serviceLocator) : base(serviceLocator)
         {
         }
 
         [Route("add")]
         [HttpPost]
-        public IActionResult AddCategory([FromBody] CategoryDTO CategoryDTO)
+        public IActionResult AddSubCategory([FromBody] SubCategoryDTO SubCategoryDTO)
         {
             try
             {
@@ -30,9 +29,9 @@ namespace MyCT.Controller.Api
                     return BadRequestMessage();
                 }
 
-                AddCreatedBy<CategoryDTO>(CategoryDTO);
-                var CategoryBO = _serviceLocator.Resolve<ICategoryBO>();
-                if (CategoryBO.Add(CategoryDTO, out _object) > 0)
+                AddCreatedBy<SubCategoryDTO>(SubCategoryDTO);
+                var SubCategoryBO = _serviceLocator.Resolve<ISubCategoryBO>();
+                if (SubCategoryBO.Add(SubCategoryDTO, out _object) > 0)
                 {
                     return Created(new Uri("", UriKind.Relative), _object);
                 }
@@ -49,7 +48,7 @@ namespace MyCT.Controller.Api
 
         [Route("edit")]
         [HttpPut]
-        public IActionResult EditCategory([FromBody] CategoryDTO CategoryDTO)
+        public IActionResult EditSubCategory([FromBody] SubCategoryDTO SubCategoryDTO)
         {
             try
             {
@@ -58,9 +57,9 @@ namespace MyCT.Controller.Api
                     return BadRequestMessage();
                 }
 
-                AddCreatedBy<CategoryDTO>(CategoryDTO);
-                var CategoryBO = _serviceLocator.Resolve<ICategoryBO>();
-                if (CategoryBO.Add(CategoryDTO, out _object) > 0)
+                AddCreatedBy<SubCategoryDTO>(SubCategoryDTO);
+                var SubCategoryBO = _serviceLocator.Resolve<ISubCategoryBO>();
+                if (SubCategoryBO.Add(SubCategoryDTO, out _object) > 0)
                 {
                     return Ok(_object);
                 }
@@ -81,10 +80,10 @@ namespace MyCT.Controller.Api
         {
             try
             {
-                
 
-                var CategoryBO = _serviceLocator.Resolve<ICategoryBO>();
-                var list = CategoryBO.List();
+
+                var SubCategoryBO = _serviceLocator.Resolve<ISubCategoryBO>();
+                var list = SubCategoryBO.List();
                 if (list != null)
                 {
                     return Ok(list);
@@ -100,16 +99,16 @@ namespace MyCT.Controller.Api
             }
         }
 
-        [HttpGet("{categoryid}")]
-        public IActionResult GetById(int categoryid)
+        [HttpGet("{subsubcategoryid}")]
+        public IActionResult GetById(int subsubcategoryid)
         {
             try
             {
-                var CategoryBO = _serviceLocator.Resolve<ICategoryBO>();
-                var category = CategoryBO.GetById(categoryid);
-                if (category != null)
+                var SubCategoryBO = _serviceLocator.Resolve<ISubCategoryBO>();
+                var subcategory = SubCategoryBO.GetById(subsubcategoryid);
+                if (subcategory != null)
                 {
-                    return Ok(category);
+                    return Ok(subcategory);
                 }
                 else
                 {
@@ -122,13 +121,13 @@ namespace MyCT.Controller.Api
             }
         }
 
-        [HttpDelete("{categoryid}")]
+        [HttpDelete("{subsubcategoryid}")]
         public IActionResult Delete(int id)
         {
             try
-            { 
-                var CategoryBO = _serviceLocator.Resolve<ICategoryBO>();
-                if (CategoryBO.Remove(id))
+            {
+                var SubCategoryBO = _serviceLocator.Resolve<ISubCategoryBO>();
+                if (SubCategoryBO.Remove(id))
                 {
                     return NoContent();
                 }
@@ -144,6 +143,5 @@ namespace MyCT.Controller.Api
                 throw;
             }
         }
-
     }
 }

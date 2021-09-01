@@ -20,9 +20,9 @@ namespace MyCT.Controller.Account
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private UserManager<CTUser> _userManager;
-        private SignInManager<CTUser> _signInManager;
-        private IConfiguration _configuration;
+        private readonly UserManager<CTUser> _userManager;
+        private readonly SignInManager<CTUser> _signInManager;
+        private readonly IConfiguration _configuration;
         public AccountController(UserManager<CTUser> userManager, SignInManager<CTUser> signInManager, IConfiguration configuration)
         {
             this._userManager = userManager;
@@ -59,7 +59,6 @@ namespace MyCT.Controller.Account
         {
             if (ModelState.IsValid)
             {
-                IdentityUserClaim<int> identityUserClaim = new IdentityUserClaim<int>();
 
                 CTUser ctUser = await _userManager.FindByEmailAsync(userDTO.Email);
                 SignInResult result = await _signInManager.CheckPasswordSignInAsync(ctUser, userDTO.Password, false);

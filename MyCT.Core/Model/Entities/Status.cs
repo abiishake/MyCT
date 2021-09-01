@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MyCT.Core.Model.Entities
 {
-    public class Status : IEntity
+    public class Status : ObjectDetails, IEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }

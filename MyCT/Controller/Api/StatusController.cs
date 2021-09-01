@@ -1,27 +1,26 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MyCT.Core.Model.DTO;
+using MyCT.Interface.BOObjects;
+using MyCT.Interface.ServiceLocator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
-using MyCT.Core.Model.DTO;
-using MyCT.Interface.BOObjects;
-using MyCT.Interface.ServiceLocator;
 
 namespace MyCT.Controller.Api
 {
-    [Route("api/category")]
+    [Route("api/status")]
     [ApiController]
-    public class CategoryController : BaseController
+    public class StatusController : BaseController
     {
-        public CategoryController(IServiceLocator serviceLocator) : base(serviceLocator)
+        public StatusController(IServiceLocator serviceLocator) : base(serviceLocator)
         {
         }
 
         [Route("add")]
         [HttpPost]
-        public IActionResult AddCategory([FromBody] CategoryDTO CategoryDTO)
+        public IActionResult AddStatus([FromBody] StatusDTO StatusDTO)
         {
             try
             {
@@ -30,9 +29,9 @@ namespace MyCT.Controller.Api
                     return BadRequestMessage();
                 }
 
-                AddCreatedBy<CategoryDTO>(CategoryDTO);
-                var CategoryBO = _serviceLocator.Resolve<ICategoryBO>();
-                if (CategoryBO.Add(CategoryDTO, out _object) > 0)
+                AddCreatedBy<StatusDTO>(StatusDTO);
+                var StatusBO = _serviceLocator.Resolve<IStatusBO>();
+                if (StatusBO.Add(StatusDTO, out _object) > 0)
                 {
                     return Created(new Uri("", UriKind.Relative), _object);
                 }
@@ -49,7 +48,7 @@ namespace MyCT.Controller.Api
 
         [Route("edit")]
         [HttpPut]
-        public IActionResult EditCategory([FromBody] CategoryDTO CategoryDTO)
+        public IActionResult EditStatus([FromBody] StatusDTO StatusDTO)
         {
             try
             {
@@ -58,9 +57,9 @@ namespace MyCT.Controller.Api
                     return BadRequestMessage();
                 }
 
-                AddCreatedBy<CategoryDTO>(CategoryDTO);
-                var CategoryBO = _serviceLocator.Resolve<ICategoryBO>();
-                if (CategoryBO.Add(CategoryDTO, out _object) > 0)
+                AddCreatedBy<StatusDTO>(StatusDTO);
+                var StatusBO = _serviceLocator.Resolve<IStatusBO>();
+                if (StatusBO.Add(StatusDTO, out _object) > 0)
                 {
                     return Ok(_object);
                 }
@@ -81,10 +80,10 @@ namespace MyCT.Controller.Api
         {
             try
             {
-                
 
-                var CategoryBO = _serviceLocator.Resolve<ICategoryBO>();
-                var list = CategoryBO.List();
+
+                var StatusBO = _serviceLocator.Resolve<IStatusBO>();
+                var list = StatusBO.List();
                 if (list != null)
                 {
                     return Ok(list);
@@ -100,16 +99,16 @@ namespace MyCT.Controller.Api
             }
         }
 
-        [HttpGet("{categoryid}")]
-        public IActionResult GetById(int categoryid)
+        [HttpGet("{statusid}")]
+        public IActionResult GetById(int statusid)
         {
             try
             {
-                var CategoryBO = _serviceLocator.Resolve<ICategoryBO>();
-                var category = CategoryBO.GetById(categoryid);
-                if (category != null)
+                var StatusBO = _serviceLocator.Resolve<IStatusBO>();
+                var status = StatusBO.GetById(statusid);
+                if (status != null)
                 {
-                    return Ok(category);
+                    return Ok(status);
                 }
                 else
                 {
@@ -122,13 +121,13 @@ namespace MyCT.Controller.Api
             }
         }
 
-        [HttpDelete("{categoryid}")]
+        [HttpDelete("{statusid}")]
         public IActionResult Delete(int id)
         {
             try
-            { 
-                var CategoryBO = _serviceLocator.Resolve<ICategoryBO>();
-                if (CategoryBO.Remove(id))
+            {
+                var StatusBO = _serviceLocator.Resolve<IStatusBO>();
+                if (StatusBO.Remove(id))
                 {
                     return NoContent();
                 }
@@ -144,6 +143,5 @@ namespace MyCT.Controller.Api
                 throw;
             }
         }
-
     }
 }

@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(MyCTDbContext))]
-    [Migration("20210828115000_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20210901093655_Initial_Migration")]
+    partial class Initial_Migration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -245,8 +245,14 @@ namespace DataAccessLayer.Migrations
                     b.Property<int>("CreatedById")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime");
+
                     b.Property<int>("ModifiedById")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
@@ -266,6 +272,18 @@ namespace DataAccessLayer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<int>("CreatedById")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime");
+
+                    b.Property<int>("ModifiedById")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime");
+
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
@@ -274,31 +292,13 @@ namespace DataAccessLayer.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("ModifiedById");
+
                     b.HasIndex("StateId");
 
                     b.ToTable("cities");
-                });
-
-            modelBuilder.Entity("MyCT.Core.Model.Entities.LatLong", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Latitude")
-                        .HasPrecision(12, 10)
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<decimal>("Longitude")
-                        .HasPrecision(12, 10)
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("latlongs");
                 });
 
             modelBuilder.Entity("MyCT.Core.Model.Entities.Shop", b =>
@@ -322,14 +322,28 @@ namespace DataAccessLayer.Migrations
                     b.Property<int>("CreatedById")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime");
+
                     b.Property<int>("LatLongId")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("Latitude")
+                        .HasPrecision(12, 10)
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<string>("Logo")
                         .HasColumnType("text");
 
+                    b.Property<decimal>("Longitude")
+                        .HasPrecision(12, 10)
+                        .HasColumnType("decimal(18, 2)");
+
                     b.Property<int>("ModifiedById")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
@@ -363,8 +377,6 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("CreatedById");
 
-                    b.HasIndex("LatLongId");
-
                     b.HasIndex("ModifiedById");
 
                     b.HasIndex("OwnerId");
@@ -387,8 +399,14 @@ namespace DataAccessLayer.Migrations
                     b.Property<int>("CreatedById")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime");
+
                     b.Property<int>("ModifiedById")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
@@ -408,10 +426,26 @@ namespace DataAccessLayer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<int>("CreatedById")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime");
+
+                    b.Property<int>("ModifiedById")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime");
+
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("ModifiedById");
 
                     b.ToTable("status");
                 });
@@ -428,8 +462,14 @@ namespace DataAccessLayer.Migrations
                     b.Property<int>("CreatedById")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime");
+
                     b.Property<int>("ModifiedById")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
@@ -529,11 +569,27 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("MyCT.Core.Model.Entities.City", b =>
                 {
+                    b.HasOne("MyCT.Core.Model.Entities.CTUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MyCT.Core.Model.Entities.CTUser", "ModifiedBy")
+                        .WithMany()
+                        .HasForeignKey("ModifiedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("MyCT.Core.Model.Entities.State", "State")
                         .WithMany()
                         .HasForeignKey("StateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("ModifiedBy");
 
                     b.Navigation("State");
                 });
@@ -555,12 +611,6 @@ namespace DataAccessLayer.Migrations
                     b.HasOne("MyCT.Core.Model.Entities.CTUser", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MyCT.Core.Model.Entities.LatLong", "LatLong")
-                        .WithMany()
-                        .HasForeignKey("LatLongId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -600,8 +650,6 @@ namespace DataAccessLayer.Migrations
 
                     b.Navigation("CreatedBy");
 
-                    b.Navigation("LatLong");
-
                     b.Navigation("ModifiedBy");
 
                     b.Navigation("Owner");
@@ -614,6 +662,25 @@ namespace DataAccessLayer.Migrations
                 });
 
             modelBuilder.Entity("MyCT.Core.Model.Entities.State", b =>
+                {
+                    b.HasOne("MyCT.Core.Model.Entities.CTUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MyCT.Core.Model.Entities.CTUser", "ModifiedBy")
+                        .WithMany()
+                        .HasForeignKey("ModifiedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("ModifiedBy");
+                });
+
+            modelBuilder.Entity("MyCT.Core.Model.Entities.Status", b =>
                 {
                     b.HasOne("MyCT.Core.Model.Entities.CTUser", "CreatedBy")
                         .WithMany()
