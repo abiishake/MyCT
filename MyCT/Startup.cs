@@ -75,6 +75,18 @@ namespace MyCT
 
             services.AddSwaggerGen(x =>
             {
+                //x.SwaggerDoc("MYct_V1", new OpenApiInfo()
+                //{
+                //    Title = "MyCT API",
+                //    Description = "List Of Private APIs",
+                //    Contact = new OpenApiContact()
+                //    {
+                //        Name = "Abhishek Pal",
+                //        Url = new Uri("https://www.linkedin.com/in/abiishake/"),
+                //        Email = "palabishek322@gmail.com"
+                //    }
+                //});
+
                 x.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
                     Name = "Authorization",
@@ -100,17 +112,7 @@ namespace MyCT
                     }
                 });
 
-                //x.SwaggerDoc("MYct_V1", new OpenApiInfo()
-                //{
-                //    Title = "MyCT API",
-                //    Description = "List Of Private APIs",
-                //    Contact = new OpenApiContact()
-                //    {
-                //        Name = "Abhishek Pal",
-                //        Url = new Uri("https://www.linkedin.com/in/abiishake/"),
-                //        Email = "palabishek322@gmail.com"
-                //    }
-                //});
+                
             });
         }
 
