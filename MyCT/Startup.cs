@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using MyCT.Core.Model.Entities;
 using MyCT.Interface.BOObjects;
 using MyCT.Interface.Repositories;
@@ -43,8 +44,6 @@ namespace MyCT
                 option.UseMySQL(Configuration["ConnectionStrings:MyCTDbConnection"]);
             });
 
-
-
             BusinessLogicLayer.BOObjects.ShopBO bO = null; // #NeedToFix for adding a reference to assembly 
 
             services.AddScoped<IServiceLocator, ServiceLocator>();
@@ -57,23 +56,62 @@ namespace MyCT
             }).AddEntityFrameworkStores<MyCTDbContext>();
 
             services.AddAuthentication()
-                .AddGoogle(opt =>
-                {
-                    opt.ClientId = Configuration["Google:ClientId"];
-                    opt.ClientSecret = Configuration["Google:ClientSecret"];
+            .AddGoogle(opt =>
+            {
+                opt.ClientId = Configuration["Google:ClientId"];
+                opt.ClientSecret = Configuration["Google:ClientSecret"];
 
-                })
-                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, opts =>
-                {
-                    opts.TokenValidationParameters.ValidateAudience = false;
-                    opts.TokenValidationParameters.ValidateIssuer = false;
-                    opts.TokenValidationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["BearerTokens:Key"]));
-                });
+            })
+            .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, opts =>
+            {
+                opts.TokenValidationParameters.ValidateAudience = false;
+                opts.TokenValidationParameters.ValidateIssuer = false;
+                opts.TokenValidationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["BearerTokens:Key"]));
+                opts.TokenValidationParameters.ValidIssuer = Configuration["BearerTokens:Issuer"];
+            });
             services.AddAuthorization();
 
             services.AddControllers();
 
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(x =>
+            {
+                x.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Name = "Authorization",
+                    Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+                    Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\ne.g.: \"Bearer 12345abcdef\""
+                });
+
+                x.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                   {
+                          new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference
+                                {
+                                    Type = ReferenceType.SecurityScheme,
+                                    Id = "Bearer"
+                                }
+                            },
+                            new string[] {}
+
+                    }
+                });
+
+                //x.SwaggerDoc("MYct_V1", new OpenApiInfo()
+                //{
+                //    Title = "MyCT API",
+                //    Description = "List Of Private APIs",
+                //    Contact = new OpenApiContact()
+                //    {
+                //        Name = "Abhishek Pal",
+                //        Url = new Uri("https://www.linkedin.com/in/abiishake/"),
+                //        Email = "palabishek322@gmail.com"
+                //    }
+                //});
+            });
         }
 
         private static void AddDependencies(IServiceCollection services)
@@ -97,7 +135,7 @@ namespace MyCT
                     assemblieNames.Add(assembly);
                 }
             }
-           
+
             IEnumerable<Assembly> assemblies = AppDomain.CurrentDomain.GetAssemblies().Where(x => assemblieNames.Contains(x.GetName().Name));
 
             foreach (Assembly assembly in assemblies)
@@ -148,6 +186,8 @@ namespace MyCT
             });
 
             app.UseSwagger();
+
+
 
             app.UseSwaggerUI(x =>
             {

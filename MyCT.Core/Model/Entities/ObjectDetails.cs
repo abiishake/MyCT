@@ -11,8 +11,8 @@ namespace MyCT.Core.Model.Entities
         public CTUser CreatedBy { get; set; }
         public int CreatedById { get; set; }
         public CTUser ModifiedBy { get; set; }
-        public int ModifiedById { get; set; }
-        public DateTime CreatedOn { get; set; }
-        public DateTime ModifiedOn { get; set; }
+        public int? ModifiedById { get; set; }
+        public DateTime? CreatedOn { get; set; }
+        public DateTime? ModifiedOn { get; set; }
     }
 }

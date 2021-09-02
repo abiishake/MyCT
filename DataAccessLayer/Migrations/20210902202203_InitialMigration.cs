@@ -4,7 +4,7 @@ using MySql.EntityFrameworkCore.Metadata;
 
 namespace DataAccessLayer.Migrations
 {
-    public partial class Initial_Migration : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -78,9 +78,9 @@ namespace DataAccessLayer.Migrations
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(type: "text", nullable: true),
                     CreatedById = table.Column<int>(type: "int", nullable: false),
-                    ModifiedById = table.Column<int>(type: "int", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime", nullable: false)
+                    ModifiedById = table.Column<int>(type: "int", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: true),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -96,7 +96,7 @@ namespace DataAccessLayer.Migrations
                         column: x => x.ModifiedById,
                         principalTable: "users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -107,9 +107,9 @@ namespace DataAccessLayer.Migrations
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(type: "text", nullable: true),
                     CreatedById = table.Column<int>(type: "int", nullable: false),
-                    ModifiedById = table.Column<int>(type: "int", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime", nullable: false)
+                    ModifiedById = table.Column<int>(type: "int", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: true),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -125,7 +125,7 @@ namespace DataAccessLayer.Migrations
                         column: x => x.ModifiedById,
                         principalTable: "users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -136,9 +136,9 @@ namespace DataAccessLayer.Migrations
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(type: "text", nullable: true),
                     CreatedById = table.Column<int>(type: "int", nullable: false),
-                    ModifiedById = table.Column<int>(type: "int", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime", nullable: false)
+                    ModifiedById = table.Column<int>(type: "int", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: true),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -154,7 +154,7 @@ namespace DataAccessLayer.Migrations
                         column: x => x.ModifiedById,
                         principalTable: "users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -271,9 +271,9 @@ namespace DataAccessLayer.Migrations
                     Name = table.Column<string>(type: "text", nullable: true),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     CreatedById = table.Column<int>(type: "int", nullable: false),
-                    ModifiedById = table.Column<int>(type: "int", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime", nullable: false)
+                    ModifiedById = table.Column<int>(type: "int", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: true),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -295,7 +295,7 @@ namespace DataAccessLayer.Migrations
                         column: x => x.ModifiedById,
                         principalTable: "users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -307,9 +307,9 @@ namespace DataAccessLayer.Migrations
                     Name = table.Column<string>(type: "text", nullable: true),
                     StateId = table.Column<int>(type: "int", nullable: false),
                     CreatedById = table.Column<int>(type: "int", nullable: false),
-                    ModifiedById = table.Column<int>(type: "int", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime", nullable: false)
+                    ModifiedById = table.Column<int>(type: "int", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: true),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -331,7 +331,7 @@ namespace DataAccessLayer.Migrations
                         column: x => x.ModifiedById,
                         principalTable: "users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -357,9 +357,9 @@ namespace DataAccessLayer.Migrations
                     Latitude = table.Column<decimal>(type: "decimal(18, 2)", precision: 12, scale: 10, nullable: false),
                     Longitude = table.Column<decimal>(type: "decimal(18, 2)", precision: 12, scale: 10, nullable: false),
                     CreatedById = table.Column<int>(type: "int", nullable: false),
-                    ModifiedById = table.Column<int>(type: "int", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime", nullable: false)
+                    ModifiedById = table.Column<int>(type: "int", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: true),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -405,7 +405,7 @@ namespace DataAccessLayer.Migrations
                         column: x => x.ModifiedById,
                         principalTable: "users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_shops_users_OwnerId",
                         column: x => x.OwnerId,

@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace MyCT.Controller.Api
 {
-    [Route("api/subsubcategory")]
+    [Route("api/subcategories")]
     [ApiController]
-    public class SubSubCategoryController : BaseController
+    public class SubCategoryController : BaseController
     {
-        public SubSubCategoryController(IServiceLocator serviceLocator) : base(serviceLocator)
+        public SubCategoryController(IServiceLocator serviceLocator) : base(serviceLocator)
         {
         }
 
@@ -99,13 +99,13 @@ namespace MyCT.Controller.Api
             }
         }
 
-        [HttpGet("{subsubcategoryid}")]
-        public IActionResult GetById(int subsubcategoryid)
+        [HttpGet("{subcategoryid}")]
+        public IActionResult GetById(int subcategoryid)
         {
             try
             {
                 var SubCategoryBO = _serviceLocator.Resolve<ISubCategoryBO>();
-                var subcategory = SubCategoryBO.GetById(subsubcategoryid);
+                var subcategory = SubCategoryBO.GetById(subcategoryid);
                 if (subcategory != null)
                 {
                     return Ok(subcategory);
@@ -121,7 +121,7 @@ namespace MyCT.Controller.Api
             }
         }
 
-        [HttpDelete("{subsubcategoryid}")]
+        [HttpDelete("{subcategoryid}")]
         public IActionResult Delete(int id)
         {
             try

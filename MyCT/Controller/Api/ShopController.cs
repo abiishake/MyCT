@@ -10,7 +10,7 @@ using MyCT.Interface.ServiceLocator;
 
 namespace MyCT.Controller.Api
 {
-    [Route("api/shop")]
+    [Route("api/shops")]
     [ApiController]
     public class ShopController : BaseController
     {

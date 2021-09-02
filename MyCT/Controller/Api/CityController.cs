@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MyCT.Controller.Api
 {
-    [Route("api/city")]
+    [Route("api/cities")]
     [ApiController]
     public class CityController : BaseController
     {

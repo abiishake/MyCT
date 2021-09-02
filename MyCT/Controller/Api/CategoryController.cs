@@ -11,7 +11,7 @@ using MyCT.Interface.ServiceLocator;
 
 namespace MyCT.Controller.Api
 {
-    [Route("api/category")]
+    [Route("api/categories")]
     [ApiController]
     public class CategoryController : BaseController
     {

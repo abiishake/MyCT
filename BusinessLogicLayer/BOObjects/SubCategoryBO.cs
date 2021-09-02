@@ -25,10 +25,10 @@ namespace BusinessLogicLayer.BOObjects
                 {
                     SubCategory subCategory = new SubCategory()
                     {
-                        Name = SubCategoryDTO.Name,
-                        CategoryId = SubCategoryDTO.CategoryId,
-                        CreatedOn = SubCategoryDTO.CreatedOn
+                        Name = SubCategoryDTO.Name
                     };
+
+                    AddCreated<SubCategoryDTO, SubCategory>(SubCategoryDTO, subCategory);
                     unitOfWork.SubCategories.Add(subCategory);
                     _object = subCategory;
                     return unitOfWork.Save();
@@ -49,11 +49,11 @@ namespace BusinessLogicLayer.BOObjects
             {
                 using (var unitOfWork = _serviceLocator.Resolve<IUnitOfWork>())
                 {
-                    SubCategory subcategory = unitOfWork.SubCategories.GetById(SubCategoryDTO.Id);
-                    subcategory.Name = SubCategoryDTO.Name;
-                    subcategory.CategoryId = SubCategoryDTO.CategoryId;
-                    subcategory.ModifiedOn = SubCategoryDTO.ModifiedOn;
-                    _object = subcategory;
+                    SubCategory subCategory = unitOfWork.SubCategories.GetById(SubCategoryDTO.Id);
+                    subCategory.Name = SubCategoryDTO.Name;
+                    _object = subCategory;
+
+                    AddModified<SubCategoryDTO, SubCategory>(SubCategoryDTO, subCategory);
                     return unitOfWork.Save();
                 }
             }

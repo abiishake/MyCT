@@ -29,6 +29,8 @@ namespace BusinessLogicLayer.BOObjects
                         Name = StateDTO.Name,
                         CreatedOn = StateDTO.CreatedOn
                     };
+
+                    AddCreated<StateDTO, State>(StateDTO, state);
                     unitOfWork.States.Add(state);
                     _object = state;
                     return unitOfWork.Save();
@@ -54,6 +56,8 @@ namespace BusinessLogicLayer.BOObjects
                     state.Name = StateDTO.Name;
                     state.ModifiedOn = StateDTO.ModifiedOn;
                     _object = state;
+
+                    AddModified<StateDTO, State>(StateDTO, state);
                     return unitOfWork.Save();
                 }
             }

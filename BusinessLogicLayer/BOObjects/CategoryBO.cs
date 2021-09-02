@@ -28,6 +28,8 @@ namespace BusinessLogicLayer.BOObjects
                         Name = CategoryDTO.Name,
                         CreatedOn = CategoryDTO.CreatedOn
                     };
+
+                    AddCreated<CategoryDTO, Category>(CategoryDTO, category);
                     unitOfWork.Categories.Add(category);
                     _object = category;
                     return unitOfWork.Save();
@@ -53,6 +55,7 @@ namespace BusinessLogicLayer.BOObjects
                     category.Name = CategoryDTO.Name;
                     category.ModifiedOn = CategoryDTO.ModifiedOn;
                     _object = category;
+                    AddModified<CategoryDTO, Category>(CategoryDTO, category);
                     return unitOfWork.Save();
                 }
             }

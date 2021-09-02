@@ -1,4 +1,5 @@
-﻿using MyCT.Core.Model.Entities;
+﻿using MyCT.Core.Model.DTO;
+using MyCT.Core.Model.Entities;
 using MyCT.Interface.ServiceLocator;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,17 @@ namespace BusinessLogicLayer.BOObjects
             this._serviceLocator = serviceLocator;
         }
 
-      
+        protected void AddCreated<T, TEntity>(T DTO, TEntity Entity) where T: BaseDTO where TEntity : ObjectDetails
+        {
+            ((ObjectDetails)Entity).CreatedById = ((BaseDTO)DTO).CreatedById;
+            ((ObjectDetails)Entity).CreatedOn = ((BaseDTO)DTO).CreatedOn;
+        }
+
+        protected void AddModified<T, TEntity>(T DTO, TEntity Entity) where T : BaseDTO where TEntity : ObjectDetails
+        {
+            ((ObjectDetails)Entity).ModifiedById = ((BaseDTO)DTO).ModifiedById;
+            ((ObjectDetails)Entity).ModifiedOn = ((BaseDTO)DTO).ModifiedOn;
+        }
+
     }
 }

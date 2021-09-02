@@ -29,6 +29,8 @@ namespace BusinessLogicLayer.BOObjects
                         StateId = CityDTO.StateId,
                         CreatedOn = CityDTO.CreatedOn
                     };
+
+                    AddCreated<CityDTO, City>(CityDTO, city);
                     unitOfWork.Cities.Add(city);
                     _object = city;
                     return unitOfWork.Save();
@@ -55,6 +57,8 @@ namespace BusinessLogicLayer.BOObjects
                     city.StateId = CityDTO.StateId;
                     city.ModifiedOn = CityDTO.ModifiedOn;
                     _object = city;
+
+                    AddModified<CityDTO, City>(CityDTO, city);
                     return unitOfWork.Save();
                 }
             }

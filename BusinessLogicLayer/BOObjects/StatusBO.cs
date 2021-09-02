@@ -28,6 +28,8 @@ namespace BusinessLogicLayer.BOObjects
                         Name = StatusDTO.Name,
                         CreatedOn = StatusDTO.CreatedOn
                     };
+
+                    AddCreated<StatusDTO, Status>(StatusDTO, status);
                     unitOfWork.Status.Add(status);
                     _object = status;
                     return unitOfWork.Save();
@@ -53,6 +55,8 @@ namespace BusinessLogicLayer.BOObjects
                     status.Name = StatusDTO.Name;
                     status.ModifiedOn = StatusDTO.ModifiedOn;
                     _object = status;
+
+                    AddModified<StatusDTO, Status>(StatusDTO, status);
                     return unitOfWork.Save();
                 }
             }

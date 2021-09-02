@@ -16,7 +16,7 @@ using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace MyCT.Controller.Account
 {
-    [Route("api/account")]
+    [Route("api/accounts")]
     [ApiController]
     public class AccountController : ControllerBase
     {
@@ -30,18 +30,24 @@ namespace MyCT.Controller.Account
             this._configuration = configuration;
         }
 
+        [ApiExplorerSettings(IgnoreApi = true)]
         [HttpPost]
         [Route("signup")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> SignUp([FromBody] UserDTO userDTO)
         {
             if (ModelState.IsValid)
             {
-                IdentityResult identityResult = await _userManager.CreateAsync(new CTUser() { Email = userDTO.Email, UserName = userDTO.Email }, userDTO.Password);
+                CTUser cTUser = new CTUser()
+                {
+                    Email = userDTO.Email,
+                    UserName = userDTO.Email
+                };
+
+                IdentityResult identityResult = await _userManager.CreateAsync(cTUser, userDTO.Password);
 
                 if (identityResult.Succeeded)
                 {
-                    return Ok(new { Status = "Created" });
+                    return Created("", new { cTUser.Id, cTUser.Email });
                 }
                 else
                 {
@@ -67,9 +73,11 @@ namespace MyCT.Controller.Account
                 {
                     SecurityTokenDescriptor descriptor = new SecurityTokenDescriptor()
                     {
+                        Issuer = _configuration["BearerTokens:Issuer"],
                         Subject = (await _signInManager.CreateUserPrincipalAsync(ctUser)).Identities.First(),
                         Expires = DateTime.Now.AddMinutes(int.Parse(_configuration["BearerTokens:ExpiryMins"])),
-                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["BearerTokens:Key"])),SecurityAlgorithms.HmacSha256Signature)
+                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["BearerTokens:Key"])), SecurityAlgorithms.HmacSha256Signature)
+                        
                     };
                     JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
                     SecurityToken secToken = new JwtSecurityTokenHandler().CreateToken(descriptor);

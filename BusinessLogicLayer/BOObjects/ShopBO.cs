@@ -43,6 +43,8 @@ namespace BusinessLogicLayer.BOObjects
                         Latitude = ShopDTO.Latitude,
                         Longitude = ShopDTO.Longitude
                     };
+
+                    AddCreated<ShopDTO, Shop>(ShopDTO, shop);
                     unitOfWork.Shops.Add(shop);
                     _object = shop;
                     return unitOfWork.Save();
@@ -82,6 +84,8 @@ namespace BusinessLogicLayer.BOObjects
                     shop.Latitude = ShopDTO.Latitude;
                     shop.Longitude = ShopDTO.Longitude;
                     _object = shop;
+
+                    AddModified<ShopDTO, Shop>(ShopDTO, shop);
                     return unitOfWork.Save();
                 }
             }
