@@ -31,6 +31,7 @@ namespace MyCT
     public class Startup
     {
         public IConfiguration Configuration { get; }
+        readonly string AllowedSpecificOrigins = "_myAllowSpecificOrigins";
 
         public Startup(IConfiguration configuration)
         {
@@ -39,6 +40,14 @@ namespace MyCT
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(x =>
+            {
+                x.AddPolicy(name: AllowedSpecificOrigins, builder =>
+                {
+                    builder.AllowAnyOrigin();
+                });
+            });
+
             services.AddDbContext<MyCTDbContext>(option =>
             {
                 option.UseMySQL(Configuration["ConnectionStrings:MyCTDbConnection"]);
@@ -55,15 +64,15 @@ namespace MyCT
                 options.SignIn.RequireConfirmedAccount = false;
             }).AddEntityFrameworkStores<MyCTDbContext>();
 
-               //.AddGoogle(opt =>
-               // {
-               //     opt.ClientId = Configuration["Google:ClientId"];
-               //     opt.ClientSecret = Configuration["Google:ClientSecret"];
+            //.AddGoogle(opt =>
+            // {
+            //     opt.ClientId = Configuration["Google:ClientId"];
+            //     opt.ClientSecret = Configuration["Google:ClientSecret"];
 
-               // })
+            // })
 
             services.AddAuthentication()
-         
+
             .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, opts =>
             {
                 opts.TokenValidationParameters.ValidateAudience = false;
@@ -114,7 +123,7 @@ namespace MyCT
                     }
                 });
 
-                
+
             });
         }
 
