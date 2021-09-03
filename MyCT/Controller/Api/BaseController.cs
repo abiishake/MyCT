@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace MyCT.Controller.Api
 {
+    [EnableCors("_myAllowSpecificOrigins")]
     [Produces("application/json")]
     [ApiController]
     [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme)]
