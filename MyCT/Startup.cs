@@ -44,7 +44,7 @@ namespace MyCT
             {
                 x.AddPolicy(name: "_myAllowSpecificOrigins", builder =>
                 {
-                    builder.AllowAnyOrigin();
+                    builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
                 });
             });
 
