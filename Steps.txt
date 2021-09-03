@@ -1,0 +1,47 @@
+https://localhost:44385/signin-google
+
+
+
+
+dotnet user-secrets set "Google:ClientId" "544653610223-emn22taco4tgim0sr28gifp3rouumdhu.apps.googleusercontent.com"
+dotnet user-secrets set "Google:ClientSecret" "pmxEgO8zVZraPD7kx6GKiLTX"
+
+
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)] - Use this attribute
+
+
+
+[Unit]
+Description= MyCT Web API running on Ubuntu
+
+[Service]
+WorkingDirectory=/var/www/MyCT
+ExecStart=/usr/bin/dotnet /var/www/MyCT/MyCT.dll
+Restart=always
+# Restart service after 10 seconds if the dotnet service crashes:
+RestartSec=10
+KillSignal=SIGINT
+SyslogIdentifier=My-CT
+User=www-data
+Environment=ASPNETCORE_ENVIRONMENT=Production
+Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
+
+[Install]
+WantedBy=multi-user.target
+
+
+Publish Command Ubuntu
+dotnet publish --configuration Release --output /var/www/MyCT
+sudo systemctl enable kestrel-MyCT.service
+
+sudo systemctl restart kestrel-MyCT.service
+
+sudo systemctl restart nginx
+
+
+"Authentication": {
+    "Google": {
+        "ClientId": "544653610223-emn22taco4tgim0sr28gifp3rouumdhu.apps.googleusercontent.com",
+        "ClientSecret": "pmxEgO8zVZraPD7kx6GKiLTX"
+	}
+}

@@ -55,13 +55,15 @@ namespace MyCT
                 options.SignIn.RequireConfirmedAccount = false;
             }).AddEntityFrameworkStores<MyCTDbContext>();
 
-            services.AddAuthentication()
-            .AddGoogle(opt =>
-            {
-                opt.ClientId = Configuration["Google:ClientId"];
-                opt.ClientSecret = Configuration["Google:ClientSecret"];
+               //.AddGoogle(opt =>
+               // {
+               //     opt.ClientId = Configuration["Google:ClientId"];
+               //     opt.ClientSecret = Configuration["Google:ClientSecret"];
 
-            })
+               // })
+
+            services.AddAuthentication()
+         
             .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, opts =>
             {
                 opts.TokenValidationParameters.ValidateAudience = false;
@@ -170,8 +172,6 @@ namespace MyCT
                     }
                 }
             }
-
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -188,8 +188,6 @@ namespace MyCT
             });
 
             app.UseSwagger();
-
-
 
             app.UseSwaggerUI(x =>
             {
