@@ -187,7 +187,7 @@ namespace MyCT
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
 
-            app.UseCors(AllowedSpecificOrigins);
+            //app.UseCors(AllowedSpecificOrigins);
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
