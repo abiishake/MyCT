@@ -31,7 +31,7 @@ namespace MyCT
     public class Startup
     {
         public IConfiguration Configuration { get; }
-        readonly string AllowedSpecificOrigins = "_myAllowSpecificOrigins";
+        
 
         public Startup(IConfiguration configuration)
         {
@@ -42,7 +42,7 @@ namespace MyCT
         {
             services.AddCors(x =>
             {
-                x.AddPolicy(name: AllowedSpecificOrigins, builder =>
+                x.AddPolicy(name: "_myAllowSpecificOrigins", builder =>
                 {
                     builder.AllowAnyOrigin();
                 });
@@ -187,7 +187,7 @@ namespace MyCT
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
 
-            //app.UseCors(AllowedSpecificOrigins);
+            app.UseCors("_myAllowSpecificOrigins");
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

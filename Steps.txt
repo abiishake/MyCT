@@ -30,6 +30,12 @@ Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
 WantedBy=multi-user.target
 
 
+
+Github token
+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
+
+sudo journalctl -fu kestrel-MyCT.service
+
 Publish Command Ubuntu
 dotnet publish --configuration Release --output /var/www/MyCT
 sudo systemctl enable kestrel-MyCT.service

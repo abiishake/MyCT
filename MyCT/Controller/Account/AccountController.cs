@@ -17,7 +17,7 @@ using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace MyCT.Controller.Account
 {
-    [EnableCors("_myAllowSpecificOrigins")]
+    //[EnableCors("_myAllowSpecificOrigins")]
     [Route("api/accounts")]
     [ApiController]
     public class AccountController : ControllerBase
