@@ -78,7 +78,7 @@ namespace MyCT
                 opts.TokenValidationParameters.ValidateAudience = false;
                 opts.TokenValidationParameters.ValidateIssuer = false;
                 opts.TokenValidationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["BearerTokens:Key"]));
-                opts.TokenValidationParameters.ValidIssuer = Configuration["BearerTokens:Issuer"];
+                //opts.TokenValidationParameters.ValidIssuer = Configuration["BearerTokens:Issuer"];
             });
             services.AddAuthorization();
 

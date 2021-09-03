@@ -75,7 +75,6 @@ namespace MyCT.Controller.Account
                 {
                     SecurityTokenDescriptor descriptor = new SecurityTokenDescriptor()
                     {
-                        Issuer = _configuration["BearerTokens:Issuer"],
                         Subject = (await _signInManager.CreateUserPrincipalAsync(ctUser)).Identities.First(),
                         Expires = DateTime.Now.AddMinutes(int.Parse(_configuration["BearerTokens:ExpiryMins"])),
                         SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["BearerTokens:Key"])), SecurityAlgorithms.HmacSha256Signature)
